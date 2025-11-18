@@ -124,7 +124,8 @@ renderPlotly(
       price <= input[["price_choice"]][2],
       price >= input[["price_choice"]][1],
       room_type == input[["room_choice"]]) |> 
-    plot_ly(y = ~price, color = ~neighbourhood, type = "box")
+    mutate(neighbourhood = fct_reorder(neighbourhood, price)) |> 
+		plot_ly(x = ~neighbourhood, y = ~price, type = "box")
 )
 ```
 
