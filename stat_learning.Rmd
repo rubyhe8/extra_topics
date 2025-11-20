@@ -117,7 +117,52 @@ estimate here is the estimate of the root mean error
 ```{r}
 lasso_cv |> 
   broom::tidy() |> 
-  ggplot(aes( x = log(lambda, 10), y = estimate)) + 
+  ggplot(aes(x = log(lambda, 10), y = estimate)) +
+  geom_point()
+```
+
+do lasso with the right lambda (the model that should be used?)
+
+```{r}
+lasso_fit = 
+  glmnet(x = x, y = y, lambda = lambda_opt)
+```
+
+## Clustering 
+
+```{r}
+pokemon_df = 
+  read_csv("extra_topic_data/pokemon.csv") |> 
+  janitor::clean_names() |> 
+  select(hp, speed)
+```
+
+cluster pokemon based on hp and speed 
+
+```{r}
+pokemon_df |> 
+  ggplot(aes(x = hp, y = speed)) +
+  geom_point()
+```
+
+fit k-means clustering to this dataset. 
+```{r}
+kmeans_fit = 
+  kmeans(x = pokemon_df, centers = 3)
+```
+
+use `broom` to get nice results , adds a column for cluster
+
+```{r}
+pokemon_df = 
+  broom::augment(kmeans_fit, pokemon_df)
+```
+
+look at results 
+
+```{r}
+pokemon_df |> 
+  ggplot(aes(x = hp, y = speed, color = .cluster)) +
   geom_point()
 ```
 

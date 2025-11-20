@@ -125,8 +125,68 @@ Here’s plot 2: estimate here is the estimate of the root mean error
 ``` r
 lasso_cv |> 
   broom::tidy() |> 
-  ggplot(aes( x = log(lambda, 10), y = estimate)) + 
+  ggplot(aes(x = log(lambda, 10), y = estimate)) +
   geom_point()
 ```
 
 <img src="stat_learning_files/figure-gfm/unnamed-chunk-6-1.png" width="90%" />
+
+do lasso with the right lambda (the model that should be used?)
+
+``` r
+lasso_fit = 
+  glmnet(x = x, y = y, lambda = lambda_opt)
+```
+
+## Clustering
+
+``` r
+pokemon_df = 
+  read_csv("extra_topic_data/pokemon.csv") |> 
+  janitor::clean_names() |> 
+  select(hp, speed)
+```
+
+    ## Rows: 800 Columns: 13
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (3): Name, Type 1, Type 2
+    ## dbl (9): #, Total, HP, Attack, Defense, Sp. Atk, Sp. Def, Speed, Generation
+    ## lgl (1): Legendary
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+cluster pokemon based on hp and speed
+
+``` r
+pokemon_df |> 
+  ggplot(aes(x = hp, y = speed)) +
+  geom_point()
+```
+
+<img src="stat_learning_files/figure-gfm/unnamed-chunk-9-1.png" width="90%" />
+
+fit k-means clustering to this dataset.
+
+``` r
+kmeans_fit = 
+  kmeans(x = pokemon_df, centers = 3)
+```
+
+use `broom` to get nice results , adds a column for cluster
+
+``` r
+pokemon_df = 
+  broom::augment(kmeans_fit, pokemon_df)
+```
+
+look at results
+
+``` r
+pokemon_df |> 
+  ggplot(aes(x = hp, y = speed, color = .cluster)) +
+  geom_point()
+```
+
+<img src="stat_learning_files/figure-gfm/unnamed-chunk-12-1.png" width="90%" />
