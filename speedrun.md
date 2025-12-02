@@ -1,0 +1,36 @@
+using chat-gpt to code
+================
+ruby
+2025-12-02
+
+``` r
+library(tidyverse)
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+
+set.seed(11)
+```
+
+using chat-gpt to code everything we have learned in this class
+
+- while it works, chat-gpt generally has some caveats and may not code
+  things exactly how you want it to,
+
+- your prompts need to be very exact in asking it to do things
+
+- and you need to use your knowledge and eyes to review it to make sure
+  it performs and outputs things that you actually want to see
